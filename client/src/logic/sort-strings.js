@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /**
  * Sorts an array of strings in different ways.
  * It does not modify the argument (no side-effects).
@@ -21,17 +22,18 @@ export const sortStrings = (toSort = '', sortType = 'oldest') => {
   if (sortType === 'newest') {
     return sortedList.reverse();
   }
-  if (sortType === 'shortest') {
-    return sortedList.sort((a, b) => a.length - b.length);
-  }
-  if (sortType === 'longest') {
-    return sortedList.sort((a, b) => a.length - b.length).reverse();
-  }
   if (sortType === 'a') {
     return sortedList.sort();
   }
   if (sortType === 'z') {
     return sortedList.sort().reverse();
   }
+  if (sortType === 'shortest') {
+    return sortedList.sort((a, b) => a.length - b.length);
+  }
+  if (sortType === 'longest') {
+    return sortedList.sort((a, b) => a.length - b.length).reverse();
+  }
+
   return sortedList;
 };
