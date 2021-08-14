@@ -3,15 +3,18 @@ import { isWord } from '../logic/is-word.js';
 import { sortStrings } from '../logic/sort-strings.js';
 import { renderList } from '../components/render-list.js';
 
+const warnings = document.getElementById('warnings');
 /**
  * Entry point for users adding a word to the list.
  * It is called each time the user clicks the "add word" button.
  *
  * @param {Event} event - The event triggered when the user clicks the button.
  */
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const inputWord = (event) => {
   /* -- entry point for adding or removing a word -- */
   // debugger;
+  console.log('-- handler: input word --');
 
   /* -- check the target -- */
   if (event.target.type !== 'button') {
@@ -39,20 +42,28 @@ export const inputWord = (event) => {
         the list is re-rendered
   */
 
-  const warnings = document.getElementById('warnings');
-  warnings.innerText = '';
+  warnings.innerHTML = '';
 
   if (action === 'add') {
-    // ... write some code ...
-  } else if (action === 'remove') {
-    // ... write some code ...
+    // check if the word contains only letters (logic)
+    if (!isWord(text)) {
+      warnings.innerHTML = `${text} is not a word`;
+    } else {
+      data.words.push(text); // if it is a word - push to array (data)
+    }
+    console.log(data);
   }
-
+  if (action === 'remove') {
+    // check if the list contains user input
+    if (!data.words.includes(text)) {
+      warnings.innerHTML = `${text} is not on the list`;
+    } else {
+      // remove word from the list
+      data.words.splice(data.words.indexOf(text), 1);
+    }
+    console.log(data);
+  }
   /* -- render new words -- */
   const sorted = sortStrings(data.words, data.sort);
-  const newList = renderList(sorted);
-
-  const listContainer = document.getElementById('list-container');
-  listContainer.innerHTML = '';
-  listContainer.appendChild(newList);
+  renderList(sorted);
 };
